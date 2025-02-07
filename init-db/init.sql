@@ -1,0 +1,1 @@
+CREATE DATABASE IF NOT EXISTS tests_gac_db;
