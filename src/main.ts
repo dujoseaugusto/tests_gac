@@ -11,11 +11,10 @@ async function bootstrap() {
 
   // Configuração do Swagger
   const config = new DocumentBuilder()
-    .setTitle('Financial Wallet API')
+    .setTitle('Financial gac API')
     .setDescription('API para gerenciar transferências financeiras entre usuários')
     .setVersion('1.0')
-    .addTag('wallet')
-    .addBearerAuth() // Habilita autenticação JWT no Swagger
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
