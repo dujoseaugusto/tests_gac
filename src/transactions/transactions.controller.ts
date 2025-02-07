@@ -48,24 +48,13 @@ export class TransactionsController {
     return this.transactionsService.create(createTransactionDto);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: 'Remover uma transação' })
-  @ApiResponse({ status: 200, description: 'Transação removida com sucesso.' })
-  @ApiResponse({ status: 404, description: 'Transação não encontrada.' })
-  @ApiResponse({ status: 401, description: 'Não autorizado.' })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.transactionsService.remove(+id);
-  }
-
-  // Novo endpoint para reverter uma transação
-  @UseGuards(JwtAuthGuard) // Protege o endpoint com autenticação JWT
+  @UseGuards(JwtAuthGuard) 
   @ApiOperation({ summary: 'Reverter uma transação' })
   @ApiResponse({ status: 200, description: 'Transação revertida com sucesso.' })
   @ApiResponse({ status: 404, description: 'Transação não encontrada.' })
   @ApiResponse({ status: 401, description: 'Não autorizado.' })
-  @Post('reverse/:id') // Endpoint para reverter a transação
+  @Post('reverse/:id')
   reverse(@Param('id') id: string) {
-    return this.transactionsService.reverseTransaction(+id); // Chama o serviço de reversão
+    return this.transactionsService.reverseTransaction(+id);
   }
 }

@@ -65,15 +65,6 @@ export class TransactionsService {
     return this.transactionRepository.save(transaction);
   }
 
-  async remove(id: number) {
-    const transaction = await this.transactionRepository.findOne({ where: { id } });
-    if (!transaction) {
-      throw new NotFoundException(`Transaction with ID ${id} not found`);
-    }
-
-    return this.transactionRepository.remove(transaction);
-  }
-
   async reverseTransaction(id: number) {
     const transaction = await this.findOne(id);
 

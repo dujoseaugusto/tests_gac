@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -37,6 +37,10 @@ export class UsersService {
 
   async remove(id: number): Promise<void> {
     const user = await this.findOne(id);
+
+    if (user.balance !== 0) {
+      throw new BadRequestException('User cannot be removed because the balance is not zero.');
+    }
     await this.userRepository.remove(user);
   }
 
