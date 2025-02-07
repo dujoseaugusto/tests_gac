@@ -84,7 +84,7 @@ $ docker exec -it <container_name> npm run test
 Acesse a documentação completa da API via Swagger após iniciar o servidor:
 
 ```
-http://localhost:3000/api
+{{host}}/api
 ```
 
 ## Recursos Adicionais
@@ -95,12 +95,8 @@ http://localhost:3000/api
 
 ## Suporte
 
-Este projeto é de código aberto e licenciado sob o MIT. Caso tenha dúvidas ou sugestões, contribua abrindo uma issue ou enviando um pull request.
+Este projeto é de código aberto. Caso tenha dúvidas ou sugestões, contribua abrindo uma issue ou enviando um pull request.
 
 ## Autor
 
-Desenvolvido por **[Seu Nome]**, com o objetivo de criar uma aplicação escalável e eficiente para gerenciar transações financeiras.
-
----
-
-**Licença**: Este projeto está licenciado sob a licença [MIT](LICENSE).
+Desenvolvido por José Augusto Batista, com o objetivo de criar uma aplicação escalável e eficiente para gerenciar transações financeiras.
