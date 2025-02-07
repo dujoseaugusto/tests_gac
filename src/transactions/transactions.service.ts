@@ -10,7 +10,7 @@ export class TransactionsService {
   constructor(
     @InjectRepository(Transaction)
     private readonly transactionRepository: Repository<Transaction>,
-    private readonly usersService: UsersService, // Adiciona dependência do serviço de usuários
+    private readonly usersService: UsersService,
   ) {}
 
   async findAll() {
@@ -26,41 +26,38 @@ export class TransactionsService {
     if (!transaction) {
       throw new NotFoundException(`Transaction with ID ${id} not found`);
     }
-
+    transaction.receiver.balance = parseFloat(transaction.receiver.balance.toString());
+    transaction.sender.balance = parseFloat(transaction.sender.balance.toString());
+    transaction.amount = parseFloat(transaction.amount.toString());
     return transaction;
   }
 
   async create(createTransactionDto: CreateTransactionDto) {
     const { senderId, receiverId, amount } = createTransactionDto;
 
-    // Valida se o remetente existe
     const sender = await this.usersService.findOne(senderId);
     if (!sender) {
       throw new NotFoundException(`Sender with ID ${senderId} not found`);
     }
 
-    // Valida se o destinatário existe
     const receiver = await this.usersService.findOne(receiverId);
     if (!receiver) {
       throw new NotFoundException(`Receiver with ID ${receiverId} not found`);
     }
 
-    // Valida se o remetente tem saldo suficiente
     if (sender.balance < amount) {
       throw new BadRequestException('Insufficient balance');
     }
 
-    // Atualiza os saldos de remetente e destinatário
     sender.balance -= amount;
     receiver.balance += amount;
 
     await this.usersService.update(senderId, { balance: sender.balance });
     await this.usersService.update(receiverId, { balance: receiver.balance });
 
-    // Cria e salva a transação
     const transaction = this.transactionRepository.create({
-      sender: sender, // Deve ser uma instância de User
-      receiver: receiver, // Deve ser uma instância de User
+      sender: sender,
+      receiver: receiver,
       amount,
       description: createTransactionDto.description,
     });
@@ -75,5 +72,25 @@ export class TransactionsService {
     }
 
     return this.transactionRepository.remove(transaction);
+  }
+
+  async reverseTransaction(id: number) {
+    const transaction = await this.findOne(id);
+
+    if (!transaction) {
+      throw new NotFoundException(`Transaction with ID ${id} not found`);
+    }
+
+    const { sender, receiver, amount } = transaction;
+
+    sender.balance += amount;
+    receiver.balance -= amount;
+
+    await this.usersService.update(sender.id, { balance: sender.balance });
+    await this.usersService.update(receiver.id, { balance: receiver.balance });
+
+    await this.transactionRepository.remove(transaction);
+
+    return transaction;
   }
 }

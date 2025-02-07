@@ -15,7 +15,7 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ type: 'decimal', default: 100 })
+  @Column({ type: 'decimal', default: 0 })
   balance: number;
 
   @OneToMany(() => Transaction, (transaction) => transaction.sender)

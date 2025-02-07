@@ -26,6 +26,7 @@ export class UsersService {
     if (!user) {
       throw new Error(`User with ID ${id} not found`);
     }
+    user.balance = parseFloat(user.balance.toString());
     return user;
   }
 
