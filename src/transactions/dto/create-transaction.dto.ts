@@ -1,9 +1,25 @@
-import { IsNumber, IsString, IsNotEmpty } from 'class-validator';
+import { IsNumber, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTransactionDto {
   @ApiProperty({
-    description: 'Amount of the transaction',
+    description: 'ID do usuário que envia o dinheiro',
+    example: 1,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  senderId: number;
+
+  @ApiProperty({
+    description: 'ID do usuário que recebe o dinheiro',
+    example: 2,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  receiverId: number;
+
+  @ApiProperty({
+    description: 'Valor da transação',
     example: 100.50,
   })
   @IsNumber()
@@ -11,18 +27,9 @@ export class CreateTransactionDto {
   amount: number;
 
   @ApiProperty({
-    description: 'Description of the transaction',
-    example: 'Payment for services',
+    description: 'Descrição da transação',
+    example: 'Pagamento por serviços',
   })
-  @IsString()
   @IsNotEmpty()
   description: string;
-
-  @ApiProperty({
-    description: 'User ID associated with the transaction',
-    example: 1,
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  userId: number;
 }

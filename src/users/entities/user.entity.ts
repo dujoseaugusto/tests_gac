@@ -1,12 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Transaction } from '../../transactions/entities/transaction.entity';
 
-@Entity('users')
+@Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 100 })
+  @Column()
   name: string;
 
   @Column({ unique: true })
@@ -15,9 +15,12 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ type: 'decimal', default: 0 })
+  @Column({ type: 'decimal', default: 100 })
   balance: number;
 
-  @OneToMany(() => Transaction, (transaction) => transaction.user, { cascade: true })
-  transactions: Transaction[];
+  @OneToMany(() => Transaction, (transaction) => transaction.sender)
+  sentTransactions: Transaction[];
+
+  @OneToMany(() => Transaction, (transaction) => transaction.receiver)
+  receivedTransactions: Transaction[];
 }

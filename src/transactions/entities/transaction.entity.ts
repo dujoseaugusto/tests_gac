@@ -1,10 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
-@Entity('transactions')
+@Entity()
 export class Transaction {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @ManyToOne(() => User, (user) => user.sentTransactions, { eager: true })
+  sender: User;
+
+  @ManyToOne(() => User, (user) => user.receivedTransactions, { eager: true })
+  receiver: User;
 
   @Column({ type: 'decimal' })
   amount: number;
@@ -14,8 +20,4 @@ export class Transaction {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
-
-  @ManyToOne(() => User, (user) => user.transactions)
-  user: User; 
 }
-
