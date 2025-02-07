@@ -1,18 +1,17 @@
-# Usa a imagem oficial do Node.js
 FROM node:20
 
-# Define o diretório de trabalho dentro do container
+# Definir o diretório de trabalho
 WORKDIR /app
 
-# Copia o package.json e instala as dependências
+# Copiar arquivos de dependências para instalar pacotes
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copia o código-fonte para dentro do container
+# Copiar o código do projeto
 COPY . .
 
-# Expõe a porta que o NestJS usará
-EXPOSE 3000
+# Expor as portas da aplicação e do debug
+EXPOSE 3000 9229
 
-# Comando para iniciar a aplicação
-CMD ["npm", "run", "start:dev"]
+# Configurar o comando para iniciar o modo de desenvolvimento com suporte a debug
+CMD ["node", "--inspect=0.0.0.0:9229", "-r", "ts-node/register", "-r", "tsconfig-paths/register", "src/main.ts"]

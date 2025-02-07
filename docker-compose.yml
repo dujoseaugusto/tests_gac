@@ -15,14 +15,36 @@ services:
       - /app/node_modules
     command: npm run start:dev
 
+  app_debug:
+    build: .
+    container_name: tests_gac
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: node --inspect=0.0.0.0:9229 -r ts-node/register -r tsconfig-paths/register src/main.ts
+
+  app-test:
+    build: .
+    container_name: tests_gac_test
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run test
   db:
     image: postgres:15
     container_name: tests_gac_db
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: tests_gac_db 
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
     ports:
       - "5432:5432"
     volumes:
