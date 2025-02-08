@@ -132,7 +132,10 @@ Certifique-se de que o Docker esteja instalado. Use o comando abaixo para rodar 
 
 ```bash
 $ docker-compose up --build
+
 $ docker exec -it <container_name> npm run test
+Ou
+$ docker-compose up app-test
 ```
 
 ## Recursos Disponíveis

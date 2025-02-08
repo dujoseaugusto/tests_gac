@@ -40,7 +40,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run test
+    command: sh -c "npm run test && npm run test:e2e && npm run test:cov"
 
   db:
     image: postgres:15
