@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Transaction } from './entities/transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UsersService } from '../users/users.service';
+import { logger } from 'src/winston-logger.service';
 
 @Injectable()
 export class TransactionsService {
@@ -24,6 +25,7 @@ export class TransactionsService {
     });
 
     if (!transaction) {
+      logger.error(`Transaction with ID ${id} not found`)
       throw new NotFoundException(`Transaction with ID ${id} not found`);
     }
     transaction.receiver.balance = parseFloat(transaction.receiver.balance.toString());
@@ -47,6 +49,10 @@ export class TransactionsService {
 
     if (sender.balance < amount) {
       throw new BadRequestException('Insufficient balance');
+    }
+
+    if (sender.id === receiver.id) {
+      throw new BadRequestException('operation has the same user');
     }
 
     sender.balance -= amount;
