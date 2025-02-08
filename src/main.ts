@@ -2,14 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { logger } from './winston-logger.service';
+import { AllExceptionsFilter } from './filters/allExceptions-logger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useLogger(logger); 
 
-  // Habilitar validação global
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new AllExceptionsFilter());
 
-  // Configuração do Swagger
   const config = new DocumentBuilder()
     .setTitle('Financial gac API')
     .setDescription('API para gerenciar transferências financeiras entre usuários')
@@ -20,10 +22,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // Inicia a aplicação na porta especificada
   await app.listen(process.env.PORT ?? 3000);
+ 
 
-  console.log(`Application is running on: http://localhost:${process.env.PORT ?? 3000}/api`);
+  logger.log(`🚀 Application is running on: http://localhost:${process.env.PORT ?? 3000}/api`);
+
 }
 
 bootstrap();

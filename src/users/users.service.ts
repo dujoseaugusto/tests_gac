@@ -24,7 +24,7 @@ export class UsersService {
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
-      throw new Error(`User with ID ${id} not found`);
+      throw new BadRequestException(`User with ID ${id} not found`);
     }
     user.balance = parseFloat(user.balance.toString());
     return user;

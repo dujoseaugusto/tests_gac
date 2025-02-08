@@ -28,6 +28,7 @@ services:
     depends_on:
       - db
       - elasticsearch
+      - kibana
     volumes:
       - .:/app
       - /app/node_modules
