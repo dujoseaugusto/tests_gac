@@ -21,7 +21,7 @@ export class TransactionsService {
   async findOne(id: number) {
     const transaction = await this.transactionRepository.findOne({
       where: { id },
-      relations: ['sender', 'receiver'],
+      relations: ['sender', 'receiver']
     });
 
     if (!transaction) {
