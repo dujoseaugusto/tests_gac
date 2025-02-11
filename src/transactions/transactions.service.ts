@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Transaction } from './entities/transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UsersService } from '../users/users.service';
-import { logger } from 'src/winston-logger.service';
+import { logger } from '../winston-logger.service';
 
 @Injectable()
 export class TransactionsService {
